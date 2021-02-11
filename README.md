@@ -18,7 +18,7 @@ Californian forest fires can be found at: https://www.fire.ca.gov/incidents/2020
 
 To get a geomap.json for a certain area: https://geojson.io/#map=2/20.0/0.0
 
-To view Sentinel 2 data: [link](https://apps.sentinel-hub.com/sentinel-playground/?source=S2L2A&lat=38.6989521545997&lng=-122.76308119297028&zoom=11&preset=6_SWIR&layers=B01,B02,B03&maxcc=100&gain=1.0&gamma=1.0&time=2019-04-01%7C2019-10-27&atmFilter=&showDates=truehttps://apps.sentinel-hub.com/sentinel-playground/?source=S2&lat=31.77546135026095&lng=5.611610412597656&zoom=4&preset=1-NATURAL-COLOR&layers=B01,B02,B03&maxcc=100&gain=1.0&gamma=1.0&time=2020-08-01%7C2021-02-11&atmFilter=&showDates=false)
+To view Sentinel 2 data: [link](https://apps.sentinel-hub.com/sentinel-playground/)
 
 ### Forest fire cases
 
