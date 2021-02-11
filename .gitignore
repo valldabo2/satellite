@@ -1,3 +1,4 @@
 *.ipynb_checkpoints
-*/data/*
+glass-fire/data/*
+glass-fire/methane_data/*
 .python-version
