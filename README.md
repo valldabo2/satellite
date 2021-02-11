@@ -24,7 +24,9 @@ To view Sentinel 2 data: [link](https://apps.sentinel-hub.com/sentinel-playgroun
 
 #### Glass-fire
 [Incident](https://www.fire.ca.gov/incidents/2020/9/27/glass-fire/)
+
 [View data](https://apps.sentinel-hub.com/sentinel-playground/?source=S2L2A&lat=38.54986874686269&lng=-122.56942838430405&zoom=11&preset=6_SWIR&layers=B01,B02,B03&maxcc=100&gain=1.0&gamma=1.0&time=2020-03-01%7C2020-09-29&atmFilter=&showDates=true)
+
 [Geojson](http://geojson.io/#map=10/38.5546/-122.5573)
 
 ### Methane leaks
