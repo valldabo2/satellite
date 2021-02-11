@@ -39,11 +39,11 @@ Resources:
 
 # Todos
 
-[ ] Write download script for multiple forest fire cases
-[ ] Inspect downloaded data
-[ ] Find annotation program and annotate data
-[ ] Find appropriate model for detection, object detection, prediction of forest fires
-[ ] Synthesize with weather data
-[ ] How to identify methane gas leaks?
-[ ] Get known cases of forest fires
-[ ] Get known cases of methane leaks
+- [ ] Write download script for multiple forest fire cases
+- [ ] Inspect downloaded data
+- [ ] Find annotation program and annotate data
+- [ ] Find appropriate model for detection, object detection, prediction of forest fires
+- [ ] Synthesize with weather data
+- [ ] How to identify methane gas leaks?
+- [ ] Get known cases of forest fires
+- [ ] Get known cases of methane leaks
