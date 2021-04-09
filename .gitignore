@@ -1,4 +1,6 @@
 *.ipynb_checkpoints
-glass-fire/data/*
-glass-fire/methane_data/*
+notebooks/awsdata
+notebooks/sentinelsat
 .python-version
+.idea
+*/__pycache__/*
