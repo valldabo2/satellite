@@ -1,0 +1,6 @@
+jupyterlab
+sentinelhub
+sentinelsat
+rasterio
+matplotlib
+scikit-image
