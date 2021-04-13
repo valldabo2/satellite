@@ -5,3 +5,4 @@ notebooks/sentinelsat
 .idea
 */__pycache__/*
 venv/
+*data*
