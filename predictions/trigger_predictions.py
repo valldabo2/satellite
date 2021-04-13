@@ -1,30 +1,40 @@
 import requests
+import uuid
+import os
 
-data = {
-    "displayName": "bbb",
-    "model": "projects/317101099846/locations/europe-west4/models/1678646392358174720",
-    "modelParameters": {
-      "confidenceThreshold": 0.0,
-      "maxPredictions": 10
-    },
-    "inputConfig": {
-        "instancesFormat": "jsonl",
-        "gcsSource": {
-            "uris": ["gs://cloud-ai-platform-1b863bec-7bcc-4f10-87ca-405bebd38d4d/jsonll.jsonl"]
-        }
-    },
-    "outputConfig": {
-        "predictionsFormat": "jsonl",
-        "gcsDestination": {
-            "outputUriPrefix": "gs://cloud-ai-platform-1b863bec-7bcc-4f10-87ca-405bebd38d4d"
+
+def build_request(model: str, source_uri: str, output_uri: str):
+    return {
+        "displayName": f"run_{uuid.uuid4()}",
+        "model": model,
+        "modelParameters": {
+        "confidenceThreshold": 0.0,
+        "maxPredictions": 10
+        },
+        "inputConfig": {
+            "instancesFormat": "jsonl",
+            "gcsSource": {
+                "uris": [source_uri]
+            }
+        },
+        "outputConfig": {
+            "predictionsFormat": "jsonl",
+            "gcsDestination": {
+                "outputUriPrefix": output_uri
+            }
         }
     }
-}
 
-r = requests.post('https://europe-west4-aiplatform.googleapis.com/v1alpha1/projects/317101099846/locations/europe-west4/batchPredictionJobs',
-  json=data, headers={
-    "Content-Type": "application/json; charset=utf-8",
-    "Authorization": "Bearer <token_here>"
-    }
-)
-print(r.status_code)
+def trigger_predictions(source_uri: str) -> str:
+    r = requests.post(os.getenv("PREDICTION_ENDPOINT"),
+        json=build_request(os.getenv("MODEL"), source_uri, os.getenv("OUTPUT_URI")),
+        headers={
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": f"Bearer {os.getenv('TOKEN')}"
+        }
+    )
+    return r.json()['name'].rsplit('/', 1)[-1]
+
+## Example
+# job_name = trigger_predictions("gs://cloud-ai-platform-1b863bec-7bcc-4f10-87ca-405bebd38d4d/config_03401a43-925f-4568-8bf0-9b1d25f3c5ef.jsonl")
+# print(job_name)
