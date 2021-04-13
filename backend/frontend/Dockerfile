@@ -2,7 +2,7 @@ FROM node:latest AS build
 
 WORKDIR workspace
 COPY . .
-RUN yarn build
+RUN npm run build
 
 FROM  nginx:latest AS deployment
 
