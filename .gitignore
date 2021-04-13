@@ -4,3 +4,5 @@ notebooks/sentinelsat
 .python-version
 .idea
 */__pycache__/*
+*/venv/*
+*.DS_Store*
