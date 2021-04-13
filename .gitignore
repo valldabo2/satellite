@@ -4,5 +4,5 @@ notebooks/sentinelsat
 .python-version
 .idea
 */__pycache__/*
-venv/
-*data*
+venv/*
+lib/src/data/*
