@@ -13,3 +13,4 @@ def plot_image(image, factor=1.0, clip_range=None, figsize=(15, 15), **kwargs):
         ax.imshow(image * factor, **kwargs)
     ax.set_xticks([])
     ax.set_yticks([])
+    return ax

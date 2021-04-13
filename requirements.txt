@@ -1,0 +1,7 @@
+jupyterlab==3.0.14
+sentinelhub==3.2.1
+git+git://github.com/sentinelsat/sentinelsat.git@releases/tag/v0.15#egg=sentinelsat
+rasterio==1.2.2
+matplotlib==3.4.1
+scikit-image==0.18.1
+pandas==1.2.4
