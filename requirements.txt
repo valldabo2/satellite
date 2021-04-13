@@ -4,3 +4,4 @@ sentinelsat
 rasterio
 matplotlib
 scikit-image
+shapely

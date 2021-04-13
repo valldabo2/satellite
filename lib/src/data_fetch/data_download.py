@@ -1,6 +1,5 @@
 import fnmatch
 import os
-from pathlib import Path
 
 from sentinelsat import SentinelAPI
 
@@ -32,10 +31,7 @@ def download_tiles(list_of_tiles, output_folder, user, password, nfilter="*B??.j
             name = tile["tile_name"]
             date = tile["date"]
             products = api.query(
-                date=date,
-                tileid=name,
-                platformname="Sentinel-2",
-                producttype="S2MSI1C"
+                date=date, tileid=name, platformname="Sentinel-2", producttype="S2MSI1C"
             )
             if nfilter:
                 downloaded_products = api.download_all(
