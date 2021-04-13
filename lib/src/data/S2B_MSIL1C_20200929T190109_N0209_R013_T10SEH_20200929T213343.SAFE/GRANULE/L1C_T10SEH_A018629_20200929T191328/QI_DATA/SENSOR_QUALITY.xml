@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><Earth_Explorer_File xmlns="http://gs2.esa.int/DATA_STRUCTURE/olqcReport">
+    <Earth_Explorer_Header>
+        <Fixed_Header>
+            <File_Name>GRANULE/L1C_T10SEH_A018629_20200929T191328/QI_DATA/SENSOR_QUALITY.xml</File_Name>
+            <File_Description>Report produced by OLQC-SC</File_Description>
+            <Notes/>
+            <Mission>S2B</Mission>
+            <File_Class>OPER</File_Class>
+            <File_Type>REP_OLQCPA</File_Type>
+            <Validity_Period>
+                <Validity_Start>UTC=2019-10-21T00:30:00</Validity_Start>
+                <Validity_Stop>UTC=2100-01-01T00:00:00</Validity_Stop>
+            </Validity_Period>
+            <File_Version>2</File_Version>
+            <Source>
+                <System>OLQC-SC</System>
+                <Creator>OLQC-SC</Creator>
+                <Creator_Version>01.06.04</Creator_Version>
+                <Creation_Date>UTC=2020-09-29T21:47:11</Creation_Date>
+            </Source>
+        </Fixed_Header>
+    </Earth_Explorer_Header>
+    <Data_Block type="xml">
+        <report date="2020-09-29T21:47:11.240Z" gippVersion="1.0" globalStatus="PASSED">
+            <checkList>
+                <parentID>S2B_OPER_GIP_OLQCPA_MPC__20191004T000021_V20191021T003000</parentID>
+                <name>SENSOR_QUALITY</name>
+                <version>1.0</version>
+                <item class="http://www.esa.int/s2#pdi_level_1c_tile_container" className="PDI Level 1C Tile Folder" name="S2B_OPER_MSI_L1C_TL_VGS1_20200929T213343_A018629_T10SEH_N02.09" url="/gpfs/dpc/data/phoebus-share/PHOEBUS-4.5.003/wp_in_progress/l1c_20200929_24/app_data/steps_data/L1C/TILE/S2B_OPER_MSI_L1C_TL_VGS1_20200929T213343_A018629_T10SEH_N02.09/"/>
+                <check>
+                    <inspection creation="2020-09-29T21:47:11.101Z" duration="126" execution="2020-09-29T21:47:11.111Z" id="checkMetadata" item="S2B_OPER_MSI_L1C_TL_VGS1_20200929T213343_A018629_T10SEH_N02.09" itemURL="/gpfs/dpc/data/phoebus-share/PHOEBUS-4.5.003/wp_in_progress/l1c_20200929_24/app_data/steps_data/L1C/TILE/S2B_OPER_MSI_L1C_TL_VGS1_20200929T213343_A018629_T10SEH_N02.09/" name="Metadata file check. " priority="5" processingStatus="done" status="PASSED"/>
+                    <message contentType="text/plain">Metadata file is present.</message>
+                </check>
+                <check>
+                    <inspection creation="2020-09-29T21:47:13.775Z" duration="1" execution="2020-09-29T21:47:13.831Z" id="Missing_Lines" item="S2B_OPER_MTD_L1C_TL_VGS1_20200929T213343_A018629_T10SEH.xml" itemURL="/gpfs/dpc/data/phoebus-share/PHOEBUS-4.5.003/wp_in_progress/l1c_20200929_24/app_data/steps_data/L1C/TILE/S2B_OPER_MSI_L1C_TL_VGS1_20200929T213343_A018629_T10SEH_N02.09/S2B_OPER_MTD_L1C_TL_VGS1_20200929T213343_A018629_T10SEH.xml" name="Check the number of missing lines. " priority="5" processingStatus="done" status="PASSED"/>
+                    <message contentType="text/plain">No missing lines </message>
+                    <extraValues>
+                        <value name="MISSING_LINES">0</value>
+                    </extraValues>
+                </check>
+                <check>
+                    <inspection creation="2020-09-29T21:47:13.835Z" duration="0" execution="2020-09-29T21:47:13.879Z" id="Sensing_Time" item="S2B_OPER_MTD_L1C_TL_VGS1_20200929T213343_A018629_T10SEH.xml" itemURL="/gpfs/dpc/data/phoebus-share/PHOEBUS-4.5.003/wp_in_progress/l1c_20200929_24/app_data/steps_data/L1C/TILE/S2B_OPER_MSI_L1C_TL_VGS1_20200929T213343_A018629_T10SEH_N02.09/S2B_OPER_MTD_L1C_TL_VGS1_20200929T213343_A018629_T10SEH.xml" name="Check the consistency of the sensing time. " priority="5" processingStatus="done" status="PASSED"/>
+                    <message contentType="text/plain">Sensing time is valid </message>
+                    <extraValues>
+                        <value name="SENSING_TIME">2020-09-29T19:13:54.081583Z</value>
+                    </extraValues>
+                </check>
+                <check>
+                    <inspection creation="2020-09-29T21:47:13.893Z" duration="0" execution="2020-09-29T21:47:13.968Z" id="Corrupted_ISP" item="S2B_OPER_MTD_L1C_TL_VGS1_20200929T213343_A018629_T10SEH.xml" itemURL="/gpfs/dpc/data/phoebus-share/PHOEBUS-4.5.003/wp_in_progress/l1c_20200929_24/app_data/steps_data/L1C/TILE/S2B_OPER_MSI_L1C_TL_VGS1_20200929T213343_A018629_T10SEH_N02.09/S2B_OPER_MTD_L1C_TL_VGS1_20200929T213343_A018629_T10SEH.xml" name="Check the consistency of the granules. " priority="5" processingStatus="done" status="PASSED"/>
+                    <message contentType="text/plain">No Error detected. </message>
+                    <extraValues>
+                        <value name="CORRUPTED_ISP">0</value>
+                    </extraValues>
+                </check>
+            </checkList>
+        </report>
+    </Data_Block>
+</Earth_Explorer_File>
