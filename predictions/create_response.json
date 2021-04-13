@@ -1,0 +1,29 @@
+{
+    "name": "projects/317101099846/locations/europe-west4/batchPredictionJobs/7861332216737955840",
+    "displayName": "aa",
+    "model": "projects/317101099846/locations/europe-west4/models/1678646392358174720",
+    "inputConfig": {
+      "instancesFormat": "jsonl",
+      "gcsSource": {
+        "uris": [
+          "gs://cloud-ai-platform-1b863bec-7bcc-4f10-87ca-405bebd38d4d/jsonll.jsonl"
+        ]
+      }
+    },
+    "modelParameters": {
+      "confidenceThreshold": 0,
+      "maxPredictions": 10
+    },
+    "outputConfig": {
+      "predictionsFormat": "jsonl",
+      "gcsDestination": {
+        "outputUriPrefix": "gs://cloud-ai-platform-1b863bec-7bcc-4f10-87ca-405bebd38d4d"
+      }
+    },
+    "state": "JOB_STATE_PENDING",
+    "completionStats": {
+      "incompleteCount": "-1"
+    },
+    "createTime": "2021-04-13T09:19:12.329916Z",
+    "updateTime": "2021-04-13T09:19:12.329916Z"
+  }
