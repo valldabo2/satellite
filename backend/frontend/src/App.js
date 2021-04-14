@@ -33,7 +33,7 @@ const App = () => {
   return (
     <Layout theme="light" style={{ height: "100%" }}>
       <Header className="header">
-        <h3>The Fire Project</h3>
+        <h3>Firecrackers 2.0</h3>
         <div className="logo" />
         <Menu theme="light" mode="horizontal" defaultSelectedKeys={["2"]}>
           <Menu.Item key="1"></Menu.Item>
