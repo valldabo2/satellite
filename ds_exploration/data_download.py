@@ -97,12 +97,17 @@ def query_and_download(tile, api, cols, output_folder):
         columns=cols,
     ).set_index("id")
 
+def get_granule_foldername(unzipped_folder):
+    folder = [filename[0] for filename in os.walk(unzipped_folder)][0]
+    print ("folder:", folder)
+    return folder
 
-def extract_data_from_tile(tile, output_folder, delete_unused):
+def extract_data_from_tile(tile, output_folder, filename, delete_unused):
     file_path = Path(f"{output_folder}/{tile.title}")
     unarchive_download(file_path)
+    folder_name = get_granule_foldername(f"{output_folder}/{tile.title}/GRANULE")
     transformed_images_dir = copy_image_to_root_for_bash_tool(
-        root_dir=os.path.join(output_folder, tile.title), title=tile.title
+        root_dir=os.path.join(output_folder, tile.title), title=tile.filename
     )
     output_file=run_bash_script(transformed_images_dir,
                                   tile=tile)
@@ -123,7 +128,9 @@ def process_products(products, output_folder, delete_unused):
     print(f"Downloaded {len(products)} tiles, extracting and combining data")
     layers = []
     for tile in products.itertuples():
-        layers.append(extract_data_from_tile(tile, output_folder, delete_unused))
+        print("Tile: {}".format(tile))
+        print("FName: {}".format(tile['filename']))
+        layers.append(extract_data_from_tile(tile, output_folder, tile['filename'], delete_unused))
     return pd.DataFrame.from_records(
         layers, columns=["rgb", "b12"], index=products.index
     )
