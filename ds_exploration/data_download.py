@@ -7,7 +7,7 @@ from glob import glob
 import numpy as np
 import pandas as pd
 
-from sentinelsat import SentinelAPI
+from sentinelsat import SentinelAPI, SentinelProductsAPI
 from ds_exploration.plotting_utils import cut_and_save
 
 
@@ -47,13 +47,17 @@ def save_originals(file_path, output_folder, tile_title, keep, delete_unused):
         shutil.rmtree(Path(f'{file_path}.SAFE'))
 
 
-def query_and_download(tile, api, cols, output_folder):
-    print(f'Download tile name: {tile["tile_name"]} for {tile["date"][0]}, {tile["date"][1]}')
+def query_and_download(tile, api, cols, output_folder, nodefilter):
+    print(f'Download tile name: {tile["tile_name"]} for {tile["date"][0]}, {tile["date"][1]}, with filter {nodefilter}')
     name = tile['tile_name']
     date = tile['date']
     products = api.query(date=date, tileid=name, platformname='Sentinel-2', producttype='S2MSI1C')
-
-    downloaded_products = api.download_all(products, directory_path=output_folder, n_concurrent_dl=5)
+    
+    downloaded_products = (
+        api.download_all(products, directory_path=output_folder, n_concurrent_dl=5, nodefilter=nodefilter)
+        if nodefilter else
+        api.download_all(products, directory_path=output_folder, n_concurrent_dl=5)
+    )
 
     return pd.DataFrame([
         [v[col] for col in cols] for (_, v) in downloaded_products[0].items()
@@ -81,16 +85,21 @@ def download_tiles(list_of_tiles,
                    user,
                    password,
                    delete_unused=True,
+                   nodefilter=None,
                   ):
 
     Path(output_folder).mkdir(exist_ok=True)
     
-    api = SentinelAPI(user, password, 'https://scihub.copernicus.eu/dhus')
+    if nodefilter:
+        nodefilter=make_filter(nodefilter)
+        api = SentinelProductsAPI(user, password, 'https://scihub.copernicus.eu/dhus')
+    else:
+        api = SentinelAPI(user, password, 'https://scihub.copernicus.eu/dhus')
     
     cols = ['id', 'title', 'date', 'footprint', 'url', 'quicklook_url', 'path']
     results = []
     for tile in list_of_tiles:
-        products = query_and_download(tile, api, cols, output_folder)
+        products = query_and_download(tile, api, cols, output_folder, nodefilter)
         layers_df = process_products(products, output_folder, delete_unused)
         tiles_df = pd.concat([products, layers_df], axis=1)
         results.append(tiles_df)
