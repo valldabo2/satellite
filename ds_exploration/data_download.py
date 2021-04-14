@@ -31,13 +31,18 @@ def copy_image_to_root_for_bash_tool(root_dir):
 
 
 def run_bash_script(input_folder, tile):
-    folder_with_jp2_images = os.path.join(input_folder, tile.title + ".SAFE")
-    output_dir = os.path.join(folder_with_jp2_images, "jpg_image")
+    output_dir = os.path.join(input_folder, "jpg_image")
+    data_dir = Path(input_folder).parent
     print("starting Bash Script")
 
-    os.system(
-        f"lib/src/data_fetch/s2Converter.sh -w 10980 -o {output_dir} -i {folder_with_jp2_images}"
+    path_bash_script = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        '..',
+        'lib', 'src', 'data_fetch', 's2Converter.sh'
     )
+    bash_command = f"bash {path_bash_script} -w 10980 -o {output_dir} -i {data_dir}"
+    print(bash_command)
+    os.system(bash_command)
     final_file = os.path.join(output_dir, tile.title + ".jpg")
     return final_file
 
@@ -156,3 +161,11 @@ def download_tiles(
         results.append(tiles_df)
 
     return pd.concat(results)
+
+
+if __name__ == '__main__':
+    labels = [
+        {'date': ('20200928', '20200930'), 'tile_name': '10SEH'},
+    ]
+
+    d = download_tiles(labels[0:1], "data", 'utsavjha', 'abcdefgh')
