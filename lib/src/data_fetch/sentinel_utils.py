@@ -7,7 +7,8 @@ from pathlib import Path
 import rasterio
 
 from plotting_utils import *
-
+import pandas as pd
+import subprocess
 BANDWIDTHS_TO_EXTRACT = OrderedDict({"red": "B04", "green": "B03", "blue": "B02"})
 
 
@@ -22,7 +23,7 @@ class SentinelUtils:
     def unarchive_zip(file_path):
         unarchive_dir = file_path.parent
         shutil.unpack_archive(file_path, unarchive_dir)
-        os.remove(file_path)
+        # os.remove(file_path)
 
     @staticmethod
     def get_data_from_image(bandwidth, files):
@@ -33,6 +34,16 @@ class SentinelUtils:
             return data_array
         else:
             return None
+
+    @staticmethod
+    def save_originals(file_path, output_folder, tile_title, keep, delete_unused):
+        Path(file_path).mkdir(exist_ok=True)
+        band_files = glob(str(Path(f'{file_path}.SAFE/GRANULE/*/IMG_DATA/*.jp2')))
+        to_move = [file for file in band_files if any(file.endswith(f'{band}.jp2') for band in keep)]
+        for file in to_move:
+            Path(file).replace(Path(f'{output_folder}/{tile_title}/{Path(file).name}'))
+        if delete_unused:
+            shutil.rmtree(Path(f'{file_path}.SAFE'))
 
     @staticmethod
     def extract_bandwidth_data_from_zip(
@@ -81,3 +92,41 @@ class SentinelUtils:
         pg = parse_polygon_coordinates(polygon_coordinates)
         w, h = find_polygon_boundaries(pg)
         slice_giant_image(plot_save_path, height=h, width=w)
+
+    @staticmethod
+    def process_products(products, output_folder, delete_unused):
+        print(f'Downloaded {len(products)} tiles, extracting and combining data')
+        layers = []
+        for tile in products.itertuples():
+            layers.append(SentinelUtils.extract_data_from_tile(tile, output_folder, delete_unused))
+        return pd.DataFrame.from_records(layers, columns=['rgb', 'b12'], index=products.index)
+
+
+    @staticmethod
+    def run_bash_script(input_folder):
+        folder_with_jp2_images = os.path.join(input_folder, )
+        print("starting Bash Script")
+        subprocess.call("jp2_rgb_image_converter.sh", 0, folder_with_jp2_images, 'arg2')
+        print("ending Bash Script")
+
+
+    @staticmethod
+    def extract_data_from_tile(tile, output_folder, delete_unused):
+        file_path = Path(f'{output_folder}/{tile.title}')
+        SentinelUtils.unarchive_zip(file_path)
+
+        # run bash now
+        SentinelUtils.run_bash_script(input_folder=output_folder)
+        rgb, b12 = extract_and_combine(file_path)
+
+        plot_save_path = os.path.join(output_folder, "plots", tile.title + ".png")
+        SentinelUtils.plot_and_save_image(plot_save_path, bandwidth_data)
+
+        pg = parse_polygon_coordinates(polygon_coordinates)
+        w, h = find_polygon_boundaries(pg)
+
+
+        cut_and_save(file_path, rgb, tile.title)
+
+        SentinelUtils.save_originals(file_path, output_folder, tile.title, ['B04', 'B03', 'B02', 'B12'], delete_unused)
+        return rgb, b12

@@ -3,6 +3,7 @@ notebooks/awsdata
 notebooks/sentinelsat
 .python-version
 .idea
-*/__pycache__/*
+*pycache*
 venv/*
 lib/src/data/*
+*data*
