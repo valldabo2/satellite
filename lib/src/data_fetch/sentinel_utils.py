@@ -6,7 +6,7 @@ from pathlib import Path
 
 import rasterio
 
-from plotting_utils import *
+from lib.src.plotting_utils import *
 import pandas as pd
 import subprocess
 BANDWIDTHS_TO_EXTRACT = OrderedDict({"red": "B04", "green": "B03", "blue": "B02"})
@@ -103,20 +103,23 @@ class SentinelUtils:
 
 
     @staticmethod
-    def run_bash_script(input_folder):
-        folder_with_jp2_images = os.path.join(input_folder, )
+    def run_bash_script(input_folder, tile):
+        # tmp = 'lib/src/data/S2B_MSIL1C_20200628T184919_N0209_R113_T10SFG_20200628T220923.SAFE/GRANULE/L1C_T10SFG_A017299_20200628T185809/IMG_DATA'
+        folder_with_jp2_images = os.path.join(input_folder, tile.title + '.SAFE')
+        output_dir = os.path.join(folder_with_jp2_images, 'jpg_image')
         print("starting Bash Script")
-        subprocess.call("jp2_rgb_image_converter.sh", 0, folder_with_jp2_images, 'arg2')
+        # subprocess.call(f"s2Converter.sh -w 10980 -i {folder_with_jp2_images} ")
+        os.system(f"lib/src/data_fetch/s2Converter.sh -w 10980 -o {output_dir} -i {folder_with_jp2_images}")
         print("ending Bash Script")
 
 
     @staticmethod
     def extract_data_from_tile(tile, output_folder, delete_unused):
-        file_path = Path(f'{output_folder}/{tile.title}')
+        file_path = Path(f'{output_folder}/{tile.title}.zip')
         SentinelUtils.unarchive_zip(file_path)
 
         # run bash now
-        SentinelUtils.run_bash_script(input_folder=output_folder)
+        SentinelUtils.run_bash_script(input_folder=output_folder, tile=tile)
         rgb, b12 = extract_and_combine(file_path)
 
         plot_save_path = os.path.join(output_folder, "plots", tile.title + ".png")

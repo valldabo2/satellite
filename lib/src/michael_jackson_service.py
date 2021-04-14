@@ -1,4 +1,4 @@
-from data_fetch.sentinel_utils import SentinelUtils
+from lib.src.data_fetch.sentinel_utils import SentinelUtils
 from lib.src.data_fetch.data_download import download_tiles
 
 if __name__ == "__main__":

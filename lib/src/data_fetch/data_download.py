@@ -3,7 +3,7 @@ import os
 
 from sentinelsat import SentinelAPI
 
-from data_fetch.sentinel_utils import SentinelUtils
+from lib.src.data_fetch.sentinel_utils import SentinelUtils
 import pandas as pd
 
 def make_filter(pattern):
