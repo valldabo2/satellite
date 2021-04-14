@@ -22,15 +22,15 @@ def make_filter(pattern):
     return node_filter
 
 
-def copy_image_to_root_for_bash_tool(root_dir, title):
-    image_input_dir = os.path.join(root_dir + ".SAFE", "GRANULE", title, "IMG_DATA")
-    image_output_dir = os.path.join(root_dir + ".SAFE")
-    shutil.copytree(src=image_input_dir, dst=image_output_dir)
+def copy_image_to_root_for_bash_tool(root_dir):
+    image_output_dir = root_dir.split(os.path.sep)[:-3] + ['IMG_DATA']
+    image_output_dir = os.path.join(*image_output_dir)
+    if not os.path.exists(image_output_dir):
+        shutil.copytree(src=root_dir, dst=image_output_dir)
     return image_output_dir
 
 
 def run_bash_script(input_folder, tile):
-    # tmp = 'lib/src/data/S2B_MSIL1C_20200628T184919_N0209_R113_T10SFG_20200628T220923.SAFE/GRANULE/L1C_T10SFG_A017299_20200628T185809/IMG_DATA'
     folder_with_jp2_images = os.path.join(input_folder, tile.title + ".SAFE")
     output_dir = os.path.join(folder_with_jp2_images, "jpg_image")
     print("starting Bash Script")
@@ -98,16 +98,15 @@ def query_and_download(tile, api, cols, output_folder):
     ).set_index("id")
 
 def get_granule_foldername(unzipped_folder):
-    folder = [filename[0] for filename in os.walk(unzipped_folder)][0]
-    print ("folder:", folder)
-    return folder
+    img_folder = glob(os.path.join(unzipped_folder, '*', 'IMG_DATA'))[0]
+    return img_folder
 
-def extract_data_from_tile(tile, output_folder, filename, delete_unused):
+def extract_data_from_tile(tile, output_folder, delete_unused):
     file_path = Path(f"{output_folder}/{tile.title}")
     unarchive_download(file_path)
-    folder_name = get_granule_foldername(f"{output_folder}/{tile.title}/GRANULE")
+    folder_name = get_granule_foldername(f"{output_folder}/{tile.title}.SAFE/GRANULE")
     transformed_images_dir = copy_image_to_root_for_bash_tool(
-        root_dir=os.path.join(output_folder, tile.title), title=tile.filename
+        root_dir=folder_name
     )
     output_file=run_bash_script(transformed_images_dir,
                                   tile=tile)
@@ -129,8 +128,8 @@ def process_products(products, output_folder, delete_unused):
     layers = []
     for tile in products.itertuples():
         print("Tile: {}".format(tile))
-        print("FName: {}".format(tile['filename']))
-        layers.append(extract_data_from_tile(tile, output_folder, tile['filename'], delete_unused))
+        # print("FName: {}".format(tile['filename']))
+        layers.append(extract_data_from_tile(tile, output_folder, delete_unused))
     return pd.DataFrame.from_records(
         layers, columns=["rgb", "b12"], index=products.index
     )
