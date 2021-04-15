@@ -22,5 +22,6 @@ COPY . /usr/src/app/
 
 RUN chmod +x /usr/src/app/entrypoint.sh
 
-# run entrypoint.sh
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+ENV PORT 8080
+
+CMD ["python","main.py"]

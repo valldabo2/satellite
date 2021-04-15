@@ -12,3 +12,6 @@ class Fire(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     processing_date = db.Column(db.Date(), default=True, nullable=False)
     confidence_level = db.Column(db.Float, nullable=False)
+    cloud_coverage = db.Column(db.Float, default=0.0, nullable=True)
+    shot_date = db.Column(db.DateTime(), default=True, nullable=False)
+    shot_date_end = db.Column(db.DateTime(), default=True, nullable=False)

@@ -20,3 +20,17 @@ To create a new Fire object:
     "processing_date": "Tue, 13 Apr 2021 00:00:00 GMT",
     "confidence_level": 22.2
 }'`
+
+The service is deploy on Google Cloud Run:
+
+`forest-fires-service-v4`
+
+The Database is on Google Cloud SQL:
+	
+`ffdb`
+
+The public bucket on Google Cloud Storage:
+
+`forest_fires_model_results`
+
+To run the `deploy.sh` script, you need to install `gcloud`
