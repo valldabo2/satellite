@@ -6,6 +6,7 @@ from pathlib import Path
 from glob import glob
 import numpy as np
 import pandas as pd
+from PIL import Image
 
 from sentinelsat import SentinelAPI
 from ds_exploration.plotting_utils import cut_and_save
@@ -43,7 +44,7 @@ def run_bash_script(input_folder, tile):
     bash_command = f"bash {path_bash_script} -w 10980 -o {output_dir} -i {data_dir}"
     print(bash_command)
     os.system(bash_command)
-    final_file = os.path.join(output_dir, tile.title + ".jpg")
+    final_file = os.path.join(output_dir, tile.title + '.SAFE' + ".jpg")
     return final_file
 
 
@@ -54,20 +55,23 @@ def unarchive_download(file_path):
     os.remove(zip_file_path)
 
 
-def extract_and_combine(file_path):
-    # data_path = Path(f"{file_path}.SAFE")
-    band_files = glob(str(file_path))
+# def extract_and_combine(file_path):
+#     # data_path = Path(f"{file_path}.SAFE")
+#     band_files = glob(str(file_path))
 
-    def get_band_array(band, band_files):
-        band_file = [bf for bf in band_files if band in bf][0]
-        return rasterio.open(band_file).read(1)
+#     def get_band_array(band, band_files):
+#         band_file = [bf for bf in band_files if band in bf][0]
+#         return rasterio.open(band_file).read(1)
 
-    red, green, blue = [
-        get_band_array(band, band_files) for band in ["B04", "B03", "B02"]
-    ]
-    b12 = get_band_array("B12", band_files)
-    return (np.dstack([red, green, blue]), b12)
+#     red, green, blue = [
+#         get_band_array(band, band_files) for band in ["B04", "B03", "B02"]
+#     ]
+#     b12 = get_band_array("B12", band_files)
+#     return (np.dstack([red, green, blue]), b12)
 
+def load_large_image(file_path):
+    im = Image.open(file_path)
+    return np.array(im)
 
 def save_originals(file_path, output_folder, tile_title, keep, delete_unused):
     Path(file_path).mkdir(exist_ok=True)
@@ -116,16 +120,19 @@ def extract_data_from_tile(tile, output_folder, delete_unused):
     output_file=run_bash_script(transformed_images_dir,
                                   tile=tile)
 
-    rgb, b12 = extract_and_combine(output_file)
+    # rgb, b12 = extract_and_combine(output_file)
+    rgb = load_large_image(output_file)
+
     cut_and_save(file_path, rgb, tile.title)
-    save_originals(
-        output_file,
-        output_folder,
-        tile.title,
-        ["B04", "B03", "B02", "B12"],
-        delete_unused,
-    )
-    return rgb, b12
+
+    # save_originals(
+    #     output_file,
+    #     output_folder,
+    #     tile.title,
+    #     ["B04", "B03", "B02", "B12"],
+    #     delete_unused,
+    # )
+    return rgb
 
 
 def process_products(products, output_folder, delete_unused):
@@ -134,10 +141,11 @@ def process_products(products, output_folder, delete_unused):
     for tile in products.itertuples():
         print("Tile: {}".format(tile))
         # print("FName: {}".format(tile['filename']))
-        layers.append(extract_data_from_tile(tile, output_folder, delete_unused))
-    return pd.DataFrame.from_records(
-        layers, columns=["rgb", "b12"], index=products.index
-    )
+        extract_data_from_tile(tile, output_folder, delete_unused)
+        # layers.append(extract_data_from_tile(tile, output_folder, delete_unused))
+    # return pd.DataFrame.from_records(
+    #     layers, columns=["rgb", "b12"], index=products.index
+    # )
 
 
 def download_tiles(
@@ -157,10 +165,10 @@ def download_tiles(
     for tile in list_of_tiles:
         products = query_and_download(tile, api, cols, output_folder)
         layers_df = process_products(products, output_folder, delete_unused)
-        tiles_df = pd.concat([products, layers_df], axis=1)
-        results.append(tiles_df)
+    #     tiles_df = pd.concat([products, layers_df], axis=1)
+    #     results.append(tiles_df)
 
-    return pd.concat(results)
+    # return pd.concat(results)
 
 
 if __name__ == '__main__':
@@ -168,4 +176,4 @@ if __name__ == '__main__':
         {'date': ('20200928', '20200930'), 'tile_name': '10SEH'},
     ]
 
-    d = download_tiles(labels[0:1], "data", 'utsavjha', 'abcdefgh')
+    download_tiles(labels[0:1], "data", 'utsavjha', 'abcdefgh')
