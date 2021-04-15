@@ -20,9 +20,19 @@ def plot_image(image, factor=1.0, clip_range=None, figsize=(15, 15), **kwargs):
     return ax
 
 
-def cut_tile_blocks(tile_data, cut_factor = 10):
-    shape = (tile_data.shape[0] // cut_factor, tile_data.shape[1] // cut_factor, 3)
-    return view_as_blocks(tile_data, block_shape=(shape)).reshape(-1, *shape)
+def cut_tile_blocks(image_large, cut_factor = 110):
+    print(image_large.shape)
+    images_cut = []
+    h_chunk = int(image_large.shape[0] / cut_factor)
+    w_chunk = h_chunk 
+    for h in range(cut_factor):
+        for w in range(cut_factor):
+            image_cut = image_large[h_chunk*h:h_chunk*(h+1), w_chunk*w:w_chunk*(w+1), :]
+            images_cut.append(image_cut)
+    print(np.stack(images_cut, axis=0).shape)
+    return np.stack(images_cut, axis=0)
+    # shape = (tile_data.shape[0] // cut_factor, tile_data.shape[1] // cut_factor, 3)
+    # return view_as_blocks(tile_data, block_shape=(shape)).reshape(-1, *shape)
 
 
 def scale_image(image_data, rescale_coeff=0.2332, factor=5/2e4):
