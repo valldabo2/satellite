@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   web:
@@ -18,6 +18,12 @@ services:
       - POSTGRES_USER=hello_flask
       - POSTGRES_PASSWORD=hello_flask
       - POSTGRES_DB=hello_flask_dev
+  frontend:
+    build: frontend
+    ports:
+      - 8080:8080
+    environment:
+      - BACKEND_URL=http://web:5000
 
 volumes:
   postgres_data:
